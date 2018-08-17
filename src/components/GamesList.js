@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import GameCard from "./GameCard";
+import PropTypes from "prop-types";
 
-export default class GamesList extends Component {
+class GamesList extends Component {
   render() {
     const { games } = this.props;
     return (
@@ -13,3 +14,8 @@ export default class GamesList extends Component {
     );
   }
 }
+
+GamesList.propTypes = {
+  games: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+export default GamesList;

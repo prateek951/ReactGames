@@ -8,18 +8,18 @@ class App extends Component {
     this.state = {
       games: [
         { _id : 1,
-          price: "$32.99",
+          price: 32.99,
           thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsq9_oFU7DnOrvNFUvMR4p73gIWWBavSrRaK7WC8j-QUVpoy0WUQ",
           name: "Quadropolis",
           players: "2-4",
-          durations: "60"
+          duration: 60
         },
         { _id : 2,
-          price: "$33.99",
+          price: 33.99,
           thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS790uv29JCPz_5xkKrqj7hfQ9lo4KNGgxZYofy0SLpwguKRn9D0Q",
           name: "Roll For The Galaxy",
           players: "2-5",
-          durations: "45"
+          duration: 60
         }
       ]
     };
