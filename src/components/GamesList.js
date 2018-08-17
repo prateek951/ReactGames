@@ -7,9 +7,17 @@ class GamesList extends Component {
     const { games } = this.props;
     return (
       <div className="ui four cards">
-        {games.map(game => (
+        {games.length !== 0 ? games.map(game => (
           <GameCard key={game._id} game={game} />
-        ))}
+        )) : ( 
+            <div className="ui icon message">
+                <i className="icon info"></i>
+                <div className="content">
+                    <div className="header">There are no games in your store.</div>
+                    <p>You should add some, don't you think so?</p>
+                </div>
+            </div>
+        )}
       </div>
     );
   }

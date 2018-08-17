@@ -1,9 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import classnames from 'classnames'
 const Price = ({price}) => {
     return(
-        <span className="ui green ribbon label">${price/100}</span>
+        <span className={classnames("ui ribbon label",{
+            'red' : price/100 < 40,
+            'green' : price/100 >= 40
+        })}>${price/100}</span>
     )
 }
 

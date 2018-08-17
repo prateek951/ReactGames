@@ -15,7 +15,7 @@ class App extends Component {
           duration: 60
         },
         { _id : 2,
-          price: 3399,
+          price: 4399,
           thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS790uv29JCPz_5xkKrqj7hfQ9lo4KNGgxZYofy0SLpwguKRn9D0Q",
           name: "Roll For The Galaxy",
           players: "2-5",
