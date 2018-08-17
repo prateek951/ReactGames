@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 
 class GamesList extends Component {
   render() {
-    const { games } = this.props;
+    const { games,toggleFeatured } = this.props;
     return (
       <div className="ui four cards">
         {games.length !== 0 ? (
-          games.map(game => <GameCard key={game._id} game={game} />)
+        games.map(game => <GameCard key={game._id} game={game} toggleFeatured={toggleFeatured}/>)
         ) : (
           <div className="ui icon message">
             <i className="icon info" />
@@ -24,7 +24,7 @@ class GamesList extends Component {
 }
 
 GamesList.propTypes = {
-  games: PropTypes.arrayOf(PropTypes.object).isRequired
+  games: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 GamesList.defaultProps = {
   games: []

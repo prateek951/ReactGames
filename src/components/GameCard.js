@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import Price from "./Price";
 import Featured from "./Featured";
 
-const GameCard = ({ game }) => {
-  return (
+const GameCard = ({ game,toggleFeatured }) => {
+    return (
     <div className="ui card">
       <div className="image">
         <Price price={game.price} />
-        <Featured featured={game.featured}/>
+        <Featured featured={game.featured} toggleFeatured={toggleFeatured} gameId={game._id} />
         <img src={game.thumbnail} alt="Game Cover" />
       </div>
       <div className="content">

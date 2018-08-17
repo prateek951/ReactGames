@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import _orderBy from "lodash/orderBy";
 import "./App.css";
 import GamesList from "./components/GamesList";
-
-//Setting constant for games
-
 const games = [
   {
     _id: 1,
@@ -27,21 +24,44 @@ const games = [
     duration: 45
   }
 ];
-
 class App extends Component {
-  state = {
-    games: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      games: []
+    };
+    this.bindEvents();
+  }
+  bindEvents() {
+    this.toggleFeatured = this.toggleFeatured.bind(this);
+  }
   componentDidMount() {
     // Sorting the games collection by the name
-    this.setState({ games: _orderBy(games, ["featured","name"],["desc","asc"]) });
+    this.setState({
+      games: this.sortGames(games)
+    });
+  }
+  sortGames(games) {
+    return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
+  }
+  toggleFeatured(gameId) {
+    const newGames = this.state.games.map(game => {
+      if (game._id === gameId) {
+        return {
+          ...game,
+          featured: !game.featured
+        };
+      }
+      return game;
+    });
+    this.setState({ games: this.sortGames(newGames) });
   }
 
   render() {
     const { games } = this.state;
     return (
       <div className="App">
-        <GamesList games={games} />
+        <GamesList games={games} toggleFeatured={this.toggleFeatured} />
       </div>
     );
   }
