@@ -1,9 +1,10 @@
 {
-  "name": "jsfullstacker",
+  "name": "ReactGames",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
+    "lodash": "^4.17.10",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
