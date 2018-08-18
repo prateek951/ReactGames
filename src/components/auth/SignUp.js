@@ -6,7 +6,7 @@ export default class SignUp extends Component {
     this.state = {
       email: "",
       pass: "",
-      cpass: ""
+      confirmpass: ""
     };
     this.bindEvents();
   }
