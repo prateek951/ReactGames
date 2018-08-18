@@ -4,9 +4,15 @@ import "./App.css";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
 
+const publishers = [
+  { _id: 1, name: "Days of Wonder" },
+  { _id: 2, name: "Musical Harmonies" }
+];
+
 const games = [
   {
     _id: 1,
+    publisher: 1,
     featured: false,
     price: 3299,
     thumbnail:
@@ -17,6 +23,7 @@ const games = [
   },
   {
     _id: 2,
+    publisher: 2,
     featured: true,
     price: 4399,
     thumbnail:
@@ -63,8 +70,8 @@ class App extends Component {
     const { games } = this.state;
     return (
       <div className="ui container">
-        <GameForm/>
-        <br/>
+        <GameForm publishers={publishers}/>
+        <br />
         <GamesList games={games} toggleFeatured={this.toggleFeatured} />
       </div>
     );
