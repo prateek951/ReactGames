@@ -61,6 +61,7 @@ class App extends Component {
       games: this.sortGames(games)
     });
   }
+
   editGame(game) {
     this.setState({ selectedGame: game });
   }
@@ -77,10 +78,10 @@ class App extends Component {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
   }
   showGameForm() {
-    this.setState({ showGameForm: true });
+    this.setState({ showGameForm: true , selectedGame : {}});
   }
   hideGameForm() {
-    this.setState({ showGameForm: false });
+    this.setState({ showGameForm: false, selectedGame : {}});
   }
   toggleFeatured(gameId) {
     const newGames = this.state.games.map(game => {

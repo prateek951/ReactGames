@@ -31,6 +31,37 @@ class GameForm extends Component {
     }
   }
   
+  componentWillReceiveProps(nextProps) { 
+    if(nextProps.gameForEdit._id && nextProps.gameForEdit._id !== this.state._id){
+      this.setState({ 
+        _id : nextProps.gameForEdit._id,
+        name : nextProps.gameForEdit.name,
+        description : nextProps.gameForEdit.description,
+        price : nextProps.gameForEdit.price,
+        duration: nextProps.gameForEdit.duration,
+        players: nextProps.gameForEdit.players,
+        featured : nextProps.gameForEdit.featured,
+        publisher: nextProps.gameForEdit.publisher,
+        thumbnail: nextProps.gameForEdit.thumbnail
+      });
+    }
+      if(!nextProps.gameForEdit._id){
+        this.setState({ 
+          _id : null,
+          name : '',
+          description : '',
+          price : 0,
+          duration: 0,
+          players: '',
+          featured : false,
+          publisher: 0,
+          thumbnail: ''
+        });
+      }
+    
+
+
+  }
 
   bindEvents() {
     this.handleSubmit = this.handleSubmit.bind(this);
