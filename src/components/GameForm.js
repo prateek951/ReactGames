@@ -58,9 +58,7 @@ class GameForm extends Component {
           thumbnail: ''
         });
       }
-    
-
-
+  
   }
 
   bindEvents() {

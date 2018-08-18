@@ -54,6 +54,7 @@ class App extends Component {
     this.hideGameForm = this.hideGameForm.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.editGame = this.editGame.bind(this);
+    this.deleteGame = this.deleteGame.bind(this);
   }
   componentDidMount() {
     // Sorting the games collection by the name
@@ -61,10 +62,26 @@ class App extends Component {
       games: this.sortGames(games)
     });
   }
-
-  editGame(game) {
-    this.setState({ selectedGame: game });
+  deleteGame(game) {
+    this.setState({
+      games: this.state.games.filter(item => item._id !== game._id)
+    });
   }
+  editGame(game) {
+    this.setState({ selectedGame: game, showGameForm: true });
+  }
+  handleSave = game =>
+    game._id ? this.updateGame(game) : this.handleAdd(game);
+
+  updateGame = game => {
+    this.setState({
+      games: this.sortGames(
+        this.state.games.map(item => (item._id === game._id ? game : item))
+      ),
+      showGameForm: false
+    });
+  };
+
   handleAdd(game) {
     this.setState({
       games: this.sortGames([
@@ -78,10 +95,10 @@ class App extends Component {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
   }
   showGameForm() {
-    this.setState({ showGameForm: true , selectedGame : {}});
+    this.setState({ showGameForm: true, selectedGame: {} });
   }
   hideGameForm() {
-    this.setState({ showGameForm: false, selectedGame : {}});
+    this.setState({ showGameForm: false, selectedGame: {} });
   }
   toggleFeatured(gameId) {
     const newGames = this.state.games.map(game => {
@@ -108,7 +125,7 @@ class App extends Component {
               <GameForm
                 publishers={publishers}
                 hideGameForm={this.hideGameForm}
-                handleAdd={this.handleAdd}
+                handleAdd={this.handleSave}
                 gameForEdit={selectedGame}
               />
             </div>
@@ -118,6 +135,7 @@ class App extends Component {
               games={games}
               toggleFeatured={this.toggleFeatured}
               editGame={this.editGame}
+              deleteGame={this.deleteGame}
             />
           </div>
         </div>

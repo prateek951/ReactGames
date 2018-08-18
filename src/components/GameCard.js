@@ -1,36 +1,87 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Price from "./Price";
 import Featured from "./Featured";
 
-const GameCard = ({ game,toggleFeatured,editGame }) => {
+class GameCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showConfirmation: false
+    };
+    this.bindEvents();
+  }
+  bindEvents() {
+    this.showConfirmation = this.showConfirmation.bind(this);
+    this.hideConfirmation = this.hideConfirmation.bind(this);
+  }
+  showConfirmation() {
+    this.setState({ showConfirmation: true });
+  }
+  hideConfirmation() {
+    this.setState({ showConfirmation: false });
+  }
+
+  render() {
+    const { showConfirmation } = this.state;
+    const { game, toggleFeatured, editGame, deleteGame } = this.props;
     return (
-    <div className="ui card">
-      <div className="image">
-        <Price price={game.price} />
-        <Featured featured={game.featured} toggleFeatured={toggleFeatured} gameId={game._id} />
-        <img src={game.thumbnail} alt="Game Cover" />
-      </div>
-      <div className="content">
-        <a className="header">
-          {game.name}
-        </a>
-        <div className="meta">
-          <i className="icon users" /> {game.players}
-          &nbsp;
-          <i className="icon wait" /> {game.duration}
-          min.
+      <div className="ui card">
+        <div className="image">
+          <Price price={game.price} />
+          <Featured
+            featured={game.featured}
+            toggleFeatured={toggleFeatured}
+            gameId={game._id}
+          />
+          <img src={game.thumbnail} alt="Game Cover" />
         </div>
-        <div className="extra content">
-          <div className="ui two buttons">
-            <a className="ui green basic button" onClick={() => editGame(game)}><i className="ui icon edit"></i></a>
-            <a className="ui red basic button"><i className="ui icon trash"></i></a>
+        <div className="content">
+          <a className="header">{game.name}</a>
+          <div className="meta">
+            <i className="icon users" /> {game.players}
+            &nbsp;
+            <i className="icon wait" /> {game.duration}
+            min.
+          </div>
+          <div className="extra content">
+            {showConfirmation ? (
+              <div className="ui two buttons">
+                <a
+                  className="ui red basic button"
+                  onClick={() => deleteGame(game)}
+                >
+                  <i className="ui icon check" /> YES
+                </a>
+                <a
+                  className="ui grey basic button"
+                  onClick={this.hideConfirmation}
+                >
+                  <i className="ui icon close" /> NO
+                </a>
+              </div>
+            ) : (
+              <div className="ui two buttons">
+                <a
+                  className="ui green basic button"
+                  onClick={() => editGame(game)}
+                >
+                  <i className="ui icon edit" />
+                </a>
+                <a
+                  className="ui red basic button"
+                  onClick={this.showConfirmation}
+                >
+                  <i className="ui icon trash" />
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 GameCard.propTypes = {
   game: PropTypes.shape({
@@ -42,7 +93,8 @@ GameCard.propTypes = {
     duration: PropTypes.number.isRequired,
     featured: PropTypes.bool.isRequired
   }).isRequired,
-  editGame : PropTypes.func.isRequired
+  editGame: PropTypes.func.isRequired,
+  deleteGame: PropTypes.func.isRequired
 };
 
 export default GameCard;
