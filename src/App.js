@@ -17,6 +17,7 @@ const games = [
     _id: 1,
     publisher: 1,
     featured: false,
+    description: "Lorem Ipsum Dolor Amet",
     price: 3299,
     thumbnail:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsq9_oFU7DnOrvNFUvMR4p73gIWWBavSrRaK7WC8j-QUVpoy0WUQ",
@@ -27,6 +28,7 @@ const games = [
   {
     _id: 2,
     publisher: 2,
+    description: "Lorem Ipsum Dolor Amet",
     featured: true,
     price: 4399,
     thumbnail:
@@ -41,7 +43,8 @@ class App extends Component {
     super(props);
     this.state = {
       games: [],
-      showGameForm: false
+      showGameForm: false,
+      selectedGame: {}
     };
     this.bindEvents();
   }
@@ -50,12 +53,16 @@ class App extends Component {
     this.showGameForm = this.showGameForm.bind(this);
     this.hideGameForm = this.hideGameForm.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.editGame = this.editGame.bind(this);
   }
   componentDidMount() {
     // Sorting the games collection by the name
     this.setState({
       games: this.sortGames(games)
     });
+  }
+  editGame(game) {
+    this.setState({ selectedGame: game });
   }
   handleAdd(game) {
     this.setState({
@@ -89,7 +96,7 @@ class App extends Component {
   }
 
   render() {
-    const { games, showGameForm } = this.state;
+    const { games, showGameForm, selectedGame } = this.state;
     const noc = showGameForm ? "ten" : "sixteen";
     return (
       <div className="ui container">
@@ -101,11 +108,16 @@ class App extends Component {
                 publishers={publishers}
                 hideGameForm={this.hideGameForm}
                 handleAdd={this.handleAdd}
+                gameForEdit={selectedGame}
               />
             </div>
           )}
           <div className={`${noc} wide column`}>
-            <GamesList games={games} toggleFeatured={this.toggleFeatured} />
+            <GamesList
+              games={games}
+              toggleFeatured={this.toggleFeatured}
+              editGame={this.editGame}
+            />
           </div>
         </div>
         {/* <SignUp/> */}

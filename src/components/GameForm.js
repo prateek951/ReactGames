@@ -7,6 +7,7 @@ class GameForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      _id : null,
       name: "",
       description: "",
       price: 0,
@@ -19,6 +20,18 @@ class GameForm extends Component {
     };
     this.bindEvents();
   }
+
+  
+  componentDidMount() {
+    if(this.props.gameForEdit._id){
+      const { _id ,name, description, price, duration, players, featured, publisher, thumbnail} = this.props.gameForEdit;
+      this.setState({ 
+        _id,name,description,price,duration,players,featured,publisher,thumbnail
+      });
+    }
+  }
+  
+
   bindEvents() {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNumberChange = this.handleNumberChange.bind(this);
@@ -120,7 +133,7 @@ class GameForm extends Component {
       thumbnail,
       errors
     } = this.state;
-    const { publishers, hideGameForm } = this.props;
+    const { publishers, hideGameForm} = this.props;
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
         <div className="ui grid">
@@ -269,7 +282,16 @@ GameForm.propTypes = {
     })
   ).isRequired,
   hideGameForm: PropTypes.func.isRequired,
-  handleAdd : PropTypes.func.isRequired
+  handleAdd : PropTypes.func.isRequired,
+  gameForEdit : PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    thumbnail : PropTypes.string,
+    players : PropTypes.string,
+    price : PropTypes.number,
+    featured: PropTypes.bool,
+    duration : PropTypes.number
+  }).isRequired,
 };
 
 GameForm.defaultProps = {
