@@ -12,7 +12,7 @@ const GameCard = ({ game,toggleFeatured }) => {
         <img src={game.thumbnail} alt="Game Cover" />
       </div>
       <div className="content">
-        <a href="#" className="header">
+        <a className="header">
           {game.name}
         </a>
         <div className="meta">

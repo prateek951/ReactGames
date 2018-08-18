@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import _orderBy from "lodash/orderBy";
 import "./App.css";
 import GamesList from "./components/GamesList";
+import GameForm from "./components/GameForm";
+
 const games = [
   {
     _id: 1,
@@ -60,7 +62,9 @@ class App extends Component {
   render() {
     const { games } = this.state;
     return (
-      <div className="App">
+      <div className="ui container">
+        <GameForm/>
+        <br/>
         <GamesList games={games} toggleFeatured={this.toggleFeatured} />
       </div>
     );
