@@ -6,6 +6,12 @@ const tags = [
   { _id: 3, name: "family" }
 ];
 
+const genres = [
+  { _id: 1, name: "abstract" },
+  { _id: 2, name: "euro" },
+  { _id: 3, name: "ameritrash" }
+];
+
 export default class GameForm extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +22,8 @@ export default class GameForm extends Component {
       duration: 0,
       players: "",
       featured: false,
-      tags: []
+      tags: [],
+      genre: 1
     };
     this.bindEvents();
   }
@@ -49,6 +56,9 @@ export default class GameForm extends Component {
       : this.setState({
           tags: [...this.state.tags, tag._id]
         });
+  };
+  handleGenreChange = genre => {
+    this.setState({ genre: genre._id });
   };
   handleSubmit(e) {
     e.preventDefault();
@@ -156,6 +166,20 @@ export default class GameForm extends Component {
           ))}
         </div>
 
+        <div className="field">
+          <label htmlFor="">Genres</label>
+          {genres.map(genre => (
+            <div key={genre._id} className="inline field">
+              <input
+                type="radio"
+                id={`genre-${genre._id}`}
+                checked={this.state.genre === genre._id}
+                onChange={() => this.handleGenreChange(genre)}
+              />
+              <label htmlFor={`genre-${genre._id}`}>{genre.name}</label>
+            </div>
+          ))}
+        </div>
         <button className="ui button" type="submit">
           Create
         </button>
