@@ -49,11 +49,21 @@ class App extends Component {
     this.toggleFeatured = this.toggleFeatured.bind(this);
     this.showGameForm = this.showGameForm.bind(this);
     this.hideGameForm = this.hideGameForm.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
   componentDidMount() {
     // Sorting the games collection by the name
     this.setState({
       games: this.sortGames(games)
+    });
+  }
+  handleAdd(game) {
+    this.setState({
+      games: this.sortGames([
+        ...this.state.games,
+        { ...game, _id: this.state.games.length + 1 }
+      ]),
+      showGameForm: false
     });
   }
   sortGames(games) {
@@ -90,6 +100,7 @@ class App extends Component {
               <GameForm
                 publishers={publishers}
                 hideGameForm={this.hideGameForm}
+                handleAdd={this.handleAdd}
               />
             </div>
           )}

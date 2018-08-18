@@ -77,6 +77,7 @@ class GameForm extends Component {
       price,
       duration,
       players,
+      featured,
       publisher,
       thumbnail
     } = this.state;
@@ -92,7 +93,16 @@ class GameForm extends Component {
 
     if (Object.keys(errors).length === 0) {
       //no errors
-      console.log(this.state);
+      this.props.handleAdd( {
+      name,
+      description,
+      price,
+      duration,
+      players,
+      featured,
+      publisher,
+      thumbnail
+    } );
     } else {
       this.setState({ errors });
     }
@@ -258,7 +268,8 @@ GameForm.propTypes = {
       name: PropTypes.string.isRequired
     })
   ).isRequired,
-  hideGameForm: PropTypes.func.isRequired
+  hideGameForm: PropTypes.func.isRequired,
+  handleAdd : PropTypes.func.isRequired
 };
 
 GameForm.defaultProps = {
