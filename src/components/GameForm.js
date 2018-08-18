@@ -40,6 +40,32 @@ class GameForm extends Component {
       [e.target.name]: e.target.checked
     });
   }
+  validate(gameinfo) {
+    const errors = {};
+    if (!gameinfo.name) {
+      errors.name = "Title can't be blank";
+    }
+    if (!gameinfo.description) {
+      errors.description = "Description is required";
+    }
+    if (gameinfo.price <= 0) {
+      errors.price = "Too cheap, don't you think so?";
+    }
+    if (gameinfo.duration <= 0) {
+      errors.duration = "Too short, isn't it?";
+    }
+    if (!gameinfo.players) {
+      errors.players = "Specify the range of players";
+    }
+    if (!gameinfo.publisher) {
+      errors.publisher = "Publisher is required";
+    }
+    if (!gameinfo.thumbnail) {
+      errors.thumbnail = "Image URL cannot be blank";
+    }
+
+    return errors;
+  }
   handleSubmit(e) {
     e.preventDefault();
     // console.log({
@@ -51,18 +77,25 @@ class GameForm extends Component {
       price,
       duration,
       players,
-      featured,
-      publisher
+      publisher,
+      thumbnail
     } = this.state;
-    console.log("inside the handleSubmit method", {
+    const errors = this.validate({
       name,
       description,
       price,
       duration,
       players,
-      featured,
-      publisher
+      publisher,
+      thumbnail
     });
+
+    if (Object.keys(errors).length === 0) {
+      //no errors
+      console.log(this.state);
+    } else {
+      this.setState({ errors });
+    }
   }
 
   render() {
@@ -137,7 +170,7 @@ class GameForm extends Component {
             value={thumbnail}
             onChange={this.handleStringChange}
           />
-          <FormInlineMessage content={errors.thumbnail} type="error"/>
+          <FormInlineMessage content={errors.thumbnail} type="error" />
         </div>
         <div className="three fields">
           <div className={errors.price ? "field error" : "field"}>
@@ -150,7 +183,7 @@ class GameForm extends Component {
               value={price}
               onChange={this.handleNumberChange}
             />
-            <FormInlineMessage content={errors.price} type="error"/>
+            <FormInlineMessage content={errors.price} type="error" />
           </div>
           <div className={errors.duration ? "field error" : "field"}>
             <label htmlFor="duration">Full Game Duration</label>
@@ -162,7 +195,7 @@ class GameForm extends Component {
               value={duration}
               onChange={this.handleNumberChange}
             />
-            <FormInlineMessage content={errors.duration} type="error"/>
+            <FormInlineMessage content={errors.duration} type="error" />
           </div>
           <div className={errors.players ? "field error" : "field"}>
             <label htmlFor="players">Maximum Players</label>
@@ -174,7 +207,7 @@ class GameForm extends Component {
               value={players}
               onChange={this.handleStringChange}
             />
-            <FormInlineMessage content={errors.players} type="error"/>
+            <FormInlineMessage content={errors.players} type="error" />
           </div>
         </div>
         <div className="inline field">
@@ -202,7 +235,7 @@ class GameForm extends Component {
               </option>
             ))}
           </select>
-          <FormInlineMessage content={errors.publisher} type="error"/>
+          <FormInlineMessage content={errors.publisher} type="error" />
         </div>
 
         <div className="ui fluid buttons">
