@@ -74,7 +74,7 @@ class GameForm extends Component {
       publisher,
       thumbnail
     } = this.state;
-    const { publishers } = this.props;
+    const { publishers, hideGameForm } = this.props;
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
         <div className="ui grid">
@@ -195,9 +195,13 @@ class GameForm extends Component {
           </select>
         </div>
 
-        <button className="ui button" type="submit">
-          Create
-        </button>
+        <div className="ui fluid buttons">
+          <button className="ui primary button" type="submit">
+            Create
+          </button>
+          <div className="or"></div>
+          <a className="ui button" onClick={hideGameForm}>Cancel</a>
+        </div>
       </form>
     );
   }
@@ -208,7 +212,8 @@ GameForm.propTypes = {
       _id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  hideGameForm : PropTypes.func.isRequired,
 };
 
 GameForm.defaultProps = {

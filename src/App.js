@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import _orderBy from "lodash/orderBy";
 import "./App.css";
+import Header from "./components/Header";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
 
@@ -37,12 +38,15 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      games: []
+      games: [],
+      showGameForm: false
     };
     this.bindEvents();
   }
   bindEvents() {
     this.toggleFeatured = this.toggleFeatured.bind(this);
+    this.showGameForm = this.showGameForm.bind(this);
+    this.hideGameForm = this.hideGameForm.bind(this);
   }
   componentDidMount() {
     // Sorting the games collection by the name
@@ -52,6 +56,12 @@ class App extends Component {
   }
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
+  }
+  showGameForm() {
+    this.setState({ showGameForm: true });
+  }
+  hideGameForm() {
+    this.setState({ showGameForm: false });
   }
   toggleFeatured(gameId) {
     const newGames = this.state.games.map(game => {
@@ -67,12 +77,25 @@ class App extends Component {
   }
 
   render() {
-    const { games } = this.state;
+    const { games, showGameForm } = this.state;
+    const noc = showGameForm ? "ten" : "sixteen";
     return (
       <div className="ui container">
-        <GameForm publishers={publishers}/>
+        <Header showGameForm={this.showGameForm} />
+        <div className="ui stackable grid">
+          {showGameForm && (
+            <div className="six wide column">
+              <GameForm
+                publishers={publishers}
+                hideGameForm={this.hideGameForm}
+              />
+            </div>
+          )}
+          <div className={`${noc} wide column`}>
+            <GamesList games={games} toggleFeatured={this.toggleFeatured} />
+          </div>
+        </div>
         <br />
-        <GamesList games={games} toggleFeatured={this.toggleFeatured} />
       </div>
     );
   }
