@@ -4,6 +4,8 @@ import "./App.css";
 import Header from "./components/Header";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
+// import SignUp from "./components/auth/SignUp";
+// import Login from "./components/auth/Login";
 
 const publishers = [
   { _id: 1, name: "Days of Wonder" },
@@ -95,6 +97,8 @@ class App extends Component {
             <GamesList games={games} toggleFeatured={this.toggleFeatured} />
           </div>
         </div>
+        {/* <SignUp/> */}
+        {/* <Login/> */}
         <br />
       </div>
     );
