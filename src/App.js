@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _orderBy from "lodash/orderBy";
+import _find from "lodash/find";
 import "./App.css";
 import Header from "./components/Header";
 import GamesList from "./components/GamesList";
@@ -9,8 +10,8 @@ import api from "./api";
 // import Login from "./components/auth/Login";
 
 const publishers = [
-  { _id: '1', name: "Days of Wonder" },
-  { _id: '2', name: "Musical Harmonies" }
+  { _id: "1", name: "Days of Wonder" },
+  { _id: "2", name: "Musical Harmonies" }
 ];
 
 const games = [];
@@ -20,7 +21,8 @@ class App extends Component {
     this.state = {
       games: [],
       showGameForm: false,
-      selectedGame: {}
+      selectedGame: {},
+      loading: true
     };
     this.bindEvents();
   }
@@ -33,14 +35,19 @@ class App extends Component {
     this.deleteGame = this.deleteGame.bind(this);
   }
   componentDidMount() {
-    // Sorting the games collection by the name
-    api.games.fetchAll().then(games => this.setState({ games }));
-    console.log(this.state.games);
+    // setTimeout(() => {
+      // Sorting the games collection by the name
+      api.games.fetchAll().then(games => this.setState({ games:  this.sortGames(games) ,loading: false}));
+      console.log(this.state.games);
+    // }, 2000);
   }
   deleteGame(game) {
-    this.setState({
-      games: this.state.games.filter(item => item._id !== game._id)
-    });
+    api.games.delete(game).then(() =>
+      this.setState({
+        games: this.state.games.filter(item => game._id !== item._id),
+        showGameForm: false
+      })
+    );
   }
   editGame(game) {
     this.setState({ selectedGame: game, showGameForm: true });
@@ -48,22 +55,23 @@ class App extends Component {
   handleSave = game =>
     game._id ? this.updateGame(game) : this.handleAdd(game);
 
-  updateGame = game => {
-    this.setState({
-      games: this.sortGames(
-        this.state.games.map(item => (item._id === game._id ? game : item))
-      ),
-      showGameForm: false
+  updateGame = gameData =>
+    api.games.update(gameData).then(ugame => {
+      this.setState({
+        games: this.sortGames(
+          this.state.games.map(item => (item._id === ugame._id ? ugame : item))
+        ),
+        showGameForm: false
+      });
     });
-  };
 
-  handleAdd = (gameData) => 
+  handleAdd = gameData =>
     api.games.create(gameData).then(game => {
       this.setState({
-        games: this.sortGames([...this.state.games,game]),
+        games: this.sortGames([...this.state.games, game]),
         showGameForm: false
-      })
-    })
+      });
+    });
 
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
@@ -75,20 +83,12 @@ class App extends Component {
     this.setState({ showGameForm: false, selectedGame: {} });
   }
   toggleFeatured(gameId) {
-    const newGames = this.state.games.map(game => {
-      if (game._id === gameId) {
-        return {
-          ...game,
-          featured: !game.featured
-        };
-      }
-      return game;
-    });
-    this.setState({ games: this.sortGames(newGames) });
+    const game = _find(this.state.games, { _id: gameId });
+    return this.updateGame({ ...game, featured: !game.featured });
   }
 
   render() {
-    const { games, showGameForm, selectedGame } = this.state;
+    const { games, showGameForm, selectedGame, loading } = this.state;
     const noc = showGameForm ? "ten" : "sixteen";
     return (
       <div className="ui container">
@@ -105,12 +105,22 @@ class App extends Component {
             </div>
           )}
           <div className={`${noc} wide column`}>
-            <GamesList
-              games={games}
-              toggleFeatured={this.toggleFeatured}
-              editGame={this.editGame}
-              deleteGame={this.deleteGame}
-            />
+            {loading ? (
+              <div className="ui icon message">
+                <i className="notched circle loading icon" />
+                <div className="content">
+                  <div className="header">Wait a second...</div>
+                  <p>Loading games collection..</p>
+                </div>
+              </div>
+            ) : (
+              <GamesList
+                games={games}
+                toggleFeatured={this.toggleFeatured}
+                editGame={this.editGame}
+                deleteGame={this.deleteGame}
+              />
+            )}
           </div>
         </div>
         {/* <SignUp/> */}
