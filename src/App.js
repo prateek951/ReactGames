@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./components/Header";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
+import api from "./api";
 // import SignUp from "./components/auth/SignUp";
 // import Login from "./components/auth/Login";
 
@@ -12,32 +13,7 @@ const publishers = [
   { _id: 2, name: "Musical Harmonies" }
 ];
 
-const games = [
-  {
-    _id: 1,
-    publisher: 1,
-    featured: false,
-    description: "Lorem Ipsum Dolor Amet",
-    price: 3299,
-    thumbnail:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsq9_oFU7DnOrvNFUvMR4p73gIWWBavSrRaK7WC8j-QUVpoy0WUQ",
-    name: "Quadropolis",
-    players: "2-4",
-    duration: 60
-  },
-  {
-    _id: 2,
-    publisher: 2,
-    description: "Lorem Ipsum Dolor Amet",
-    featured: true,
-    price: 4399,
-    thumbnail:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS790uv29JCPz_5xkKrqj7hfQ9lo4KNGgxZYofy0SLpwguKRn9D0Q",
-    name: "Roll For The Galaxy",
-    players: "2-5",
-    duration: 45
-  }
-];
+const games = [];
 class App extends Component {
   constructor(props) {
     super(props);
@@ -58,9 +34,8 @@ class App extends Component {
   }
   componentDidMount() {
     // Sorting the games collection by the name
-    this.setState({
-      games: this.sortGames(games)
-    });
+    api.games.fetchAll().then(games => this.setState({ games }));
+    // console.log(this.state.games);
   }
   deleteGame(game) {
     this.setState({
