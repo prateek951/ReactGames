@@ -15,49 +15,69 @@ class GameForm extends Component {
       featured: false,
       publisher: 0,
       thumbnail: "",
-      errors: {}
+      errors: {},
+      loading: false
     };
     this.bindEvents();
   }
 
-  
   componentDidMount() {
-    if(this.props.gameForEdit._id){
-      const { _id ,name, description, price, duration, players, featured, publisher, thumbnail} = this.props.gameForEdit;
-      this.setState({ 
-        _id,name,description,price,duration,players,featured,publisher,thumbnail
+    if (this.props.gameForEdit._id) {
+      const {
+        _id,
+        name,
+        description,
+        price,
+        duration,
+        players,
+        featured,
+        publisher,
+        thumbnail
+      } = this.props.gameForEdit;
+      this.setState({
+        _id,
+        name,
+        description,
+        price,
+        duration,
+        players,
+        featured,
+        publisher,
+        thumbnail
       });
     }
   }
-  
-  componentWillReceiveProps(nextProps) { 
-    if(nextProps.gameForEdit._id && nextProps.gameForEdit._id !== this.state._id){
-      this.setState({ 
-        _id : nextProps.gameForEdit._id,
-        name : nextProps.gameForEdit.name,
-        description : nextProps.gameForEdit.description,
-        price : nextProps.gameForEdit.price,
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.gameForEdit._id &&
+      nextProps.gameForEdit._id !== this.state._id
+    ) {
+      this.setState({
+        _id: nextProps.gameForEdit._id,
+        name: nextProps.gameForEdit.name,
+        description: nextProps.gameForEdit.description,
+        price: nextProps.gameForEdit.price,
         duration: nextProps.gameForEdit.duration,
         players: nextProps.gameForEdit.players,
-        featured : nextProps.gameForEdit.featured,
+        featured: nextProps.gameForEdit.featured,
         publisher: nextProps.gameForEdit.publisher,
         thumbnail: nextProps.gameForEdit.thumbnail
       });
     }
-      if(!nextProps.gameForEdit._id){
-        this.setState({ 
-          _id : null,
-          name : '',
-          description : '',
-          price : 0,
-          duration: 0,
-          players: '',
-          featured : false,
-          publisher: 0,
-          thumbnail: ''
-        });
-      }
-  
+    if (!nextProps.gameForEdit._id) {
+      this.setState({
+        _id: null,
+        name: "",
+        description: "",
+        price: 0,
+        duration: 0,
+        players: "",
+        featured: false,
+        publisher: 0,
+        thumbnail: ""
+      });
+    }
   }
 
   bindEvents() {
@@ -122,6 +142,7 @@ class GameForm extends Component {
       publisher,
       thumbnail
     } = this.state;
+
     // Client side validation
     const errors = this.validate({
       name,
@@ -132,22 +153,30 @@ class GameForm extends Component {
       publisher,
       thumbnail
     });
-    this.setState({ errors })
+    //no loading in this case since we are dealing with the client side validation
+    this.setState({ errors });
 
     if (Object.keys(errors).length === 0) {
+      this.setState({ loading: true });
       //no errors
-      this.props.handleAdd({
-      name,
-      description,
-      price,
-      duration,
-      players,
-      featured,
-      publisher,
-      thumbnail
-    }).catch(err => this.setState({ errors : err.response.data.errors}));
-      //Server side validation
-  } 
+      // setTimeout(() => {
+        this.props
+          .handleAdd({
+            name,
+            description,
+            price,
+            duration,
+            players,
+            featured,
+            publisher,
+            thumbnail
+          })
+          .catch(err =>
+            this.setState({ errors: err.response.data.errors, loading: false })
+          );
+        //Server side validation
+      // }, 3000);
+    }
   }
 
   render() {
@@ -160,11 +189,13 @@ class GameForm extends Component {
       featured,
       publisher,
       thumbnail,
-      errors
+      errors,
+      loading
     } = this.state;
-    const { publishers, hideGameForm} = this.props;
+    const { publishers, hideGameForm } = this.props;
+    const classes = loading ? "ui form loading " : "ui form";
     return (
-      <form className="ui form" onSubmit={this.handleSubmit}>
+      <form className={classes} onSubmit={this.handleSubmit}>
         <div className="ui grid">
           <div className="twelve wide column">
             <div className={errors.name ? "field error" : "field"}>
@@ -311,17 +342,17 @@ GameForm.propTypes = {
     })
   ).isRequired,
   hideGameForm: PropTypes.func.isRequired,
-  handleAdd : PropTypes.func,
-  gameForEdit : PropTypes.shape({
-    _id : PropTypes.string,
+  handleAdd: PropTypes.func,
+  gameForEdit: PropTypes.shape({
+    _id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
-    thumbnail : PropTypes.string,
-    players : PropTypes.string,
-    price : PropTypes.number,
+    thumbnail: PropTypes.string,
+    players: PropTypes.string,
+    price: PropTypes.number,
     featured: PropTypes.bool,
-    duration : PropTypes.number
-  }).isRequired,
+    duration: PropTypes.number
+  }).isRequired
 };
 
 GameForm.defaultProps = {
