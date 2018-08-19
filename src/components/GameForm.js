@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import ReactImageFallback from "react-image-fallback";
 import FormInlineMessage from "./FormInlineMessage";
@@ -192,7 +193,7 @@ class GameForm extends Component {
       errors,
       loading
     } = this.state;
-    const { publishers, hideGameForm } = this.props;
+    const { publishers } = this.props;
     const classes = loading ? "ui form loading " : "ui form";
     return (
       <form className={classes} onSubmit={this.handleSubmit}>
@@ -326,9 +327,9 @@ class GameForm extends Component {
             Create
           </button>
           <div className="or" />
-          <a className="ui button" onClick={hideGameForm}>
+          <Link className="ui button" to="/games">
             Cancel
-          </a>
+          </Link>
         </div>
       </form>
     );

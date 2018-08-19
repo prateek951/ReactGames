@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
 import "./App.css";
@@ -20,7 +21,7 @@ class Games extends Component {
     super(props);
     this.state = {
       games: [],
-      showGameForm: false,
+      // showGameForm: false,
       selectedGame: {},
       loading: true
     };
@@ -28,17 +29,22 @@ class Games extends Component {
   }
   bindEvents() {
     this.toggleFeatured = this.toggleFeatured.bind(this);
-    this.showGameForm = this.showGameForm.bind(this);
-    this.hideGameForm = this.hideGameForm.bind(this);
+    //This is now handled by React Router  
+    // this.showGameForm = this.showGameForm.bind(this);
+    // this.hideGameForm = this.hideGameForm.bind(this);
     // this.handleAdd = this.handleAdd.bind(this);
     this.editGame = this.editGame.bind(this);
     this.deleteGame = this.deleteGame.bind(this);
   }
   componentDidMount() {
     // setTimeout(() => {
-      // Sorting the games collection by the name
-      api.games.fetchAll().then(games => this.setState({ games:  this.sortGames(games) ,loading: false}));
-      console.log(this.state.games);
+    // Sorting the games collection by the name
+    api.games
+      .fetchAll()
+      .then(games =>
+        this.setState({ games: this.sortGames(games), loading: false })
+      );
+    console.log(this.state.games);
     // }, 2000);
   }
   deleteGame(game) {
@@ -76,34 +82,39 @@ class Games extends Component {
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
   }
-  showGameForm() {
-    this.setState({ showGameForm: true, selectedGame: {} });
-  }
-  hideGameForm() {
-    this.setState({ showGameForm: false, selectedGame: {} });
-  }
+  // This is now done by using router
+  // showGameForm() {
+  //   this.setState({ showGameForm: true, selectedGame: {} });
+  // }
+  // hideGameForm() {
+  //   this.setState({ showGameForm: false, selectedGame: {} });
+  // }
   toggleFeatured(gameId) {
     const game = _find(this.state.games, { _id: gameId });
     return this.updateGame({ ...game, featured: !game.featured });
   }
 
   render() {
-    const { games, showGameForm, selectedGame, loading } = this.state;
-    const noc = showGameForm ? "ten" : "sixteen";
+    const { games, selectedGame, loading } = this.state;
+    const noc = this.props.location.pathname === '/games' ? "sixteen" : "ten";
     return (
       <div className="ui container">
         {/* <Header showGameForm={this.showGameForm} /> */}
         <div className="ui stackable grid">
-          {showGameForm && (
-            <div className="six wide column">
-              <GameForm
-                publishers={publishers}
-                hideGameForm={this.hideGameForm}
-                handleAdd={this.handleSave}
-                gameForEdit={selectedGame}
-              />
-            </div>
-          )}
+        {/* Nested route for creating a game */}
+          <Route
+            path="/games/create"
+            render={() => (
+              <div className="six wide column">
+                <GameForm
+                  publishers={publishers}
+                  handleAdd={this.handleSave}
+                  gameForEdit={{}}
+                />
+              </div>
+            )}
+          />
+
           <div className={`${noc} wide column`}>
             {loading ? (
               <div className="ui icon message">
