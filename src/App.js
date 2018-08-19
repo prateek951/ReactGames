@@ -3,13 +3,13 @@ import { Route } from "react-router-dom";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import Games from "./Games";
-import { Redirect } from "react-router-dom";
 import ShowGamePage from "./components/ShowGamePage";
+import SignUpPage from "./components/auth/SignUpPage";
 
 class App extends Component {
   state = {
     user: {
-      token: "dummy"
+      token: null
     }
   };
   doLogout = () => {
@@ -24,6 +24,8 @@ class App extends Component {
         <Header isAuthenticated={!!token} doLogout={this.doLogout} />
         <br />
         <Route path="/" exact component={HomePage} />
+        <Route path='/register' component={SignUpPage}/>
+
         <Route path="/games" component={Games} />
         <Route path="/games/:_id" component={ShowGamePage} />
       </div>
