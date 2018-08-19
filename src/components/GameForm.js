@@ -122,6 +122,7 @@ class GameForm extends Component {
       publisher,
       thumbnail
     } = this.state;
+    // Client side validation
     const errors = this.validate({
       name,
       description,
@@ -131,10 +132,11 @@ class GameForm extends Component {
       publisher,
       thumbnail
     });
+    this.setState({ errors })
 
     if (Object.keys(errors).length === 0) {
       //no errors
-      this.props.handleAdd( {
+      this.props.handleAdd({
       name,
       description,
       price,
@@ -143,10 +145,9 @@ class GameForm extends Component {
       featured,
       publisher,
       thumbnail
-    } );
-    } else {
-      this.setState({ errors });
-    }
+    }).catch(err => this.setState({ errors : err.response.data.errors}));
+      //Server side validation
+  } 
   }
 
   render() {
@@ -310,7 +311,7 @@ GameForm.propTypes = {
     })
   ).isRequired,
   hideGameForm: PropTypes.func.isRequired,
-  handleAdd : PropTypes.func.isRequired,
+  handleAdd : PropTypes.func,
   gameForEdit : PropTypes.shape({
     _id : PropTypes.string,
     name: PropTypes.string,

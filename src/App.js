@@ -28,7 +28,7 @@ class App extends Component {
     this.toggleFeatured = this.toggleFeatured.bind(this);
     this.showGameForm = this.showGameForm.bind(this);
     this.hideGameForm = this.hideGameForm.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
+    // this.handleAdd = this.handleAdd.bind(this);
     this.editGame = this.editGame.bind(this);
     this.deleteGame = this.deleteGame.bind(this);
   }
@@ -57,14 +57,14 @@ class App extends Component {
     });
   };
 
-  handleAdd(gameData) {
+  handleAdd = (gameData) => 
     api.games.create(gameData).then(game => {
       this.setState({
         games: this.sortGames([...this.state.games,game]),
         showGameForm: false
       })
     })
-  }
+
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
   }
