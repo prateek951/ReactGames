@@ -4,7 +4,6 @@ import isEmail from "validator/lib/isEmail";
 import { Link } from "react-router-dom";
 import FormInlineMessage from "../FormInlineMessage";
 
-
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -53,12 +52,12 @@ class SignUp extends Component {
 
   render() {
     const { errors, user, loading } = this.state;
-    const classes = loading? "ui form loading" : "ui form";
+    const classes = loading ? "ui form loading" : "ui form";
     return (
       <form className={classes} onSubmit={this.handleRegister}>
         <div className="ui grid">
           <div className="twelve wide column">
-            <div className="field">
+            <div className={errors.email ? "field error" : "field"}>
               <label htmlFor="email">Email</label>
               <input
                 type="email"
@@ -69,8 +68,9 @@ class SignUp extends Component {
                 value={user.email}
                 onChange={this.handleStringChange}
               />
+              <FormInlineMessage content={errors.email} type="error" />
             </div>
-            <div className="field">
+            <div className={errors.pass ? "field error" : "field"}>
               <label htmlFor="pass">Password</label>
               <input
                 type="password"
@@ -80,8 +80,9 @@ class SignUp extends Component {
                 value={user.pass}
                 onChange={this.handleStringChange}
               />
+              <FormInlineMessage content={errors.pass} type="error" />
             </div>
-            <div className="field">
+            <div className={errors.cpass ? "field error" : "field"}>
               <label htmlFor="cpass">Confirm Password</label>
               <input
                 type="password"
@@ -91,13 +92,14 @@ class SignUp extends Component {
                 value={user.cpass}
                 onChange={this.handleStringChange}
               />
-            </div>
-            <div className="ui fluid buttons">
-              <button className="ui primary button" type="submit">
-                Sign Up
-              </button>
-              <div className="or" />
-              <a className="ui button">Cancel</a>
+              <FormInlineMessage content={errors.cpass} type="error" />
+              <div className="ui fluid buttons">
+                <button className="ui primary button" type="submit">
+                  Sign Up
+                </button>
+                <div className="or" />
+                <a className="ui button">Cancel</a>
+              </div>
             </div>
           </div>
         </div>
@@ -108,6 +110,6 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   doRegister: PropTypes.func.isRequired
-}
+};
 
 export default SignUp;
