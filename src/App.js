@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import Games from "./Games";
 import ShowGamePage from "./components/ShowGamePage";
 import SignUpPage from "./components/auth/SignUpPage";
+import LoginPage from "./components/auth/LoginPage";  
 
 class App extends Component {
   state = {
@@ -34,6 +35,7 @@ class App extends Component {
         <Route path="/register" render={props => <SignUpPage {...props} setMessage={this.setMessage}/>}/>  
         <Route path="/games" component={Games} />
         <Route path="/games/:_id" component={ShowGamePage}/>
+        <Route path="/login" component={LoginPage}/>
       </div>
     );
   }

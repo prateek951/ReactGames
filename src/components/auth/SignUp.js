@@ -93,13 +93,15 @@ class SignUp extends Component {
                 onChange={this.handleStringChange}
               />
               <FormInlineMessage content={errors.cpass} type="error" />
-              <div className="ui fluid buttons">
-                <button className="ui primary button" type="submit">
-                  Sign Up
-                </button>
-                <div className="or" />
-                <a className="ui button">Cancel</a>
-              </div>
+            </div>
+            <div className="ui fluid buttons">
+              <button className="ui primary button" type="submit">
+                Sign Up
+              </button>
+              <div className="or" />
+              <Link to="/" className="ui button">
+                Cancel
+              </Link>
             </div>
           </div>
         </div>
