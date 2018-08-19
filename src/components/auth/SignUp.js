@@ -4,6 +4,7 @@ import isEmail from "validator/lib/isEmail";
 import { Link } from "react-router-dom";
 import FormInlineMessage from "../FormInlineMessage";
 
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
