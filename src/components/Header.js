@@ -1,22 +1,21 @@
 import React from "react";
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
+import { NavLink } from "react-router-dom";
 
-const Header = props => {
-  const { showGameForm } = props;
+const Header = () => {
   return (
     <div className="ui secondary pointing menu">
-      <a href="/" className="item">
+      <NavLink exact to="/" className="item">
         ReactGames
-      </a>
-      <a className="item" onClick={showGameForm}>
+      </NavLink>
+      <NavLink exact to="/games/create" className="item">
         <i className="icon plus" /> Add New Game
-      </a>
+      </NavLink>
+      <NavLink exact to="/games" className="item">
+        <i className="icon game" /> Games
+      </NavLink>
     </div>
   );
 };
-
-Header.propTypes = {
-    showGameForm : PropTypes.func.isRequired
-}
 
 export default Header;
