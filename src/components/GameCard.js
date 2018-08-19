@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Price from "./Price";
 import Featured from "./Featured";
-
+import { Link } from "react-router-dom";
 class GameCard extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +37,9 @@ class GameCard extends Component {
           <img src={game.thumbnail} alt="Game Cover" />
         </div>
         <div className="content">
-          <a className="header">{game.name}</a>
+          <Link to={`/games/${game._id}`} className="header">
+            {game.name}
+          </Link>
           <div className="meta">
             <i className="icon users" /> {game.players}
             &nbsp;

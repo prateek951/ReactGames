@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
 import "./App.css";
-import Header from "./components/Header";
+// import Header from "./components/Header";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
 import api from "./api";
@@ -92,7 +92,7 @@ class Games extends Component {
     const noc = showGameForm ? "ten" : "sixteen";
     return (
       <div className="ui container">
-        <Header showGameForm={this.showGameForm} />
+        {/* <Header showGameForm={this.showGameForm} /> */}
         <div className="ui stackable grid">
           {showGameForm && (
             <div className="six wide column">
