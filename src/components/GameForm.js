@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import ReactImageFallback from "react-image-fallback";
 import FormInlineMessage from "./FormInlineMessage";
@@ -17,7 +17,8 @@ class GameForm extends Component {
       publisher: 0,
       thumbnail: "",
       errors: {},
-      loading: false
+      loading: false,
+      redirect: false
     };
     this.bindEvents();
   }
@@ -161,21 +162,23 @@ class GameForm extends Component {
       this.setState({ loading: true });
       //no errors
       // setTimeout(() => {
-        this.props
-          .handleAdd({
-            name,
-            description,
-            price,
-            duration,
-            players,
-            featured,
-            publisher,
-            thumbnail
-          })
-          .catch(err =>
-            this.setState({ errors: err.response.data.errors, loading: false })
-          );
-        //Server side validation
+      this.props
+        .handleAdd({
+          name,
+          description,
+          price,
+          duration,
+          players,
+          featured,
+          publisher,
+          thumbnail
+        })
+        .then(() => this.setState({ redirect: true }))
+        .catch(err =>
+          this.setState({ errors: err.response.data.errors, loading: false })
+        );
+
+      //Server side validation
       // }, 3000);
     }
   }
@@ -191,12 +194,14 @@ class GameForm extends Component {
       publisher,
       thumbnail,
       errors,
-      loading
+      loading,
+      redirect
     } = this.state;
     const { publishers } = this.props;
     const classes = loading ? "ui form loading " : "ui form";
     return (
       <form className={classes} onSubmit={this.handleSubmit}>
+        {redirect && <Redirect to="/games" />}
         <div className="ui grid">
           <div className="twelve wide column">
             <div className={errors.name ? "field error" : "field"}>
