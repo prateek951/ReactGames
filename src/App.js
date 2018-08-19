@@ -9,8 +9,8 @@ import api from "./api";
 // import Login from "./components/auth/Login";
 
 const publishers = [
-  { _id: 1, name: "Days of Wonder" },
-  { _id: 2, name: "Musical Harmonies" }
+  { _id: '1', name: "Days of Wonder" },
+  { _id: '2', name: "Musical Harmonies" }
 ];
 
 const games = [];
@@ -35,7 +35,7 @@ class App extends Component {
   componentDidMount() {
     // Sorting the games collection by the name
     api.games.fetchAll().then(games => this.setState({ games }));
-    // console.log(this.state.games);
+    console.log(this.state.games);
   }
   deleteGame(game) {
     this.setState({
@@ -57,14 +57,13 @@ class App extends Component {
     });
   };
 
-  handleAdd(game) {
-    this.setState({
-      games: this.sortGames([
-        ...this.state.games,
-        { ...game, _id: this.state.games.length + 1 }
-      ]),
-      showGameForm: false
-    });
+  handleAdd(gameData) {
+    api.games.create(gameData).then(game => {
+      this.setState({
+        games: this.sortGames([...this.state.games,game]),
+        showGameForm: false
+      })
+    })
   }
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);

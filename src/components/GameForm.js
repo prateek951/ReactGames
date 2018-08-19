@@ -7,7 +7,6 @@ class GameForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id : null,
       name: "",
       description: "",
       price: 0,
@@ -306,13 +305,14 @@ class GameForm extends Component {
 GameForm.propTypes = {
   publishers: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
     })
   ).isRequired,
   hideGameForm: PropTypes.func.isRequired,
   handleAdd : PropTypes.func.isRequired,
   gameForEdit : PropTypes.shape({
+    _id : PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
     thumbnail : PropTypes.string,

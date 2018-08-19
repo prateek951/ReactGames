@@ -19,7 +19,9 @@ const Featured = ({ featured, toggleFeatured, gameId }) => {
 };
 
 Featured.propTypes = {
-  featured: PropTypes.bool.isRequired
+  featured: PropTypes.bool.isRequired,
+  toggleFeatured: PropTypes.func.isRequired,
+  gameId : PropTypes.string.isRequired
 };
 
 export default Featured;
