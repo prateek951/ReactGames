@@ -24,7 +24,7 @@ class GameCard extends Component {
 
   render() {
     const { showConfirmation } = this.state;
-    const { game, toggleFeatured, editGame, deleteGame } = this.props;
+    const { game, toggleFeatured, deleteGame } = this.props;
     return (
       <div className="ui card">
         <div className="image">
@@ -64,12 +64,12 @@ class GameCard extends Component {
               </div>
             ) : (
               <div className="ui two buttons">
-                <a
+                <Link
                   className="ui green basic button"
-                  onClick={() => editGame(game)}
+                  to={`/games/edit/${game._id}`}
                 >
                   <i className="ui icon edit" />
-                </a>
+                </Link>
                 <a
                   className="ui red basic button"
                   onClick={this.showConfirmation}
@@ -95,7 +95,6 @@ GameCard.propTypes = {
     duration: PropTypes.number.isRequired,
     featured: PropTypes.bool.isRequired
   }).isRequired,
-  editGame: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired
 };
 

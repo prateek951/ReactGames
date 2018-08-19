@@ -22,18 +22,18 @@ class Games extends Component {
     this.state = {
       games: [],
       // showGameForm: false,
-      selectedGame: {},
+      // selectedGame: {},
       loading: true
     };
     this.bindEvents();
   }
   bindEvents() {
     this.toggleFeatured = this.toggleFeatured.bind(this);
-    //This is now handled by React Router  
+    //This is now handled by React Router
     // this.showGameForm = this.showGameForm.bind(this);
     // this.hideGameForm = this.hideGameForm.bind(this);
     // this.handleAdd = this.handleAdd.bind(this);
-    this.editGame = this.editGame.bind(this);
+    // this.editGame = this.editGame.bind(this);
     this.deleteGame = this.deleteGame.bind(this);
   }
   componentDidMount() {
@@ -54,9 +54,6 @@ class Games extends Component {
         showGameForm: false
       })
     );
-  }
-  editGame(game) {
-    this.setState({ selectedGame: game, showGameForm: true });
   }
   handleSave = game =>
     game._id ? this.updateGame(game) : this.handleAdd(game);
@@ -96,12 +93,12 @@ class Games extends Component {
 
   render() {
     const { games, selectedGame, loading } = this.state;
-    const noc = this.props.location.pathname === '/games' ? "sixteen" : "ten";
+    const noc = this.props.location.pathname === "/games" ? "sixteen" : "ten";
     return (
       <div className="ui container">
         {/* <Header showGameForm={this.showGameForm} /> */}
         <div className="ui stackable grid">
-        {/* Nested route for creating a game */}
+          {/* Nested route for creating a game */}
           <Route
             path="/games/create"
             render={() => (
@@ -115,6 +112,18 @@ class Games extends Component {
             )}
           />
 
+          <Route
+            path="/games/edit/:_id"
+            render={props => (
+              <div className="six wide column">
+                <GameForm
+                  publishers={publishers}
+                  handleAdd={this.handleSave}
+                  gameForEdit={_find(games, { _id: props.match.params._id }) || {}}
+                />
+              </div>
+            )}
+          />
           <div className={`${noc} wide column`}>
             {loading ? (
               <div className="ui icon message">
@@ -128,7 +137,6 @@ class Games extends Component {
               <GamesList
                 games={games}
                 toggleFeatured={this.toggleFeatured}
-                editGame={this.editGame}
                 deleteGame={this.deleteGame}
               />
             )}
