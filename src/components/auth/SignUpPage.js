@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import SignUp from "./SignUp";
 import api from "../../api";
+import PropTypes from 'prop-types'
+import SignUp from "./SignUp";
 
 class SignUpPage extends Component {
   doRegister = data =>
     //hit the server if successful registration redirect to the login page
-    api.users.create(data).then(() => this.props.history.push("/login"));
+    api.users.create(data).then(() => {
+        this.props.setMessage("You have been successfully registered and can now login!");
+        this.props.history.push("/login")
+    });
   render() {
     return (
       <div>
@@ -15,6 +19,12 @@ class SignUpPage extends Component {
       </div>
     );
   }
+}
+
+
+SignUpPage.propTypes = {
+    setMessage: PropTypes.func.isRequired,
+    doRegister: PropTypes.func.isRequired
 }
 
 export default SignUpPage;
