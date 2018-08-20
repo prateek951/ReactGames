@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import api from "../../api";
 import Login from "./Login";
 
 class LoginPage extends Component {
-  doLogin = data => api.users.login(data).then(token => console.log(token));
+  doLogin = data =>
+    api.users.login(data).then(token => {
+      this.props.login(token);
+      this.props.history.push("/games");
+    });
 
   render() {
     return (
@@ -13,5 +18,9 @@ class LoginPage extends Component {
     );
   }
 }
+
+LoginPage.propTypes = {
+  login: PropTypes.func.isRequired
+};
 
 export default LoginPage;
