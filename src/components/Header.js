@@ -29,9 +29,17 @@ class Header extends React.Component {
           </div>
         ) : (
           <div className="ui secondary pointing menu">
-            {isAdmin && (<NavLink exact to="/games/create" className="item">
-              <i className="icon plus" /> Add New Game
-            </NavLink>)}
+            <NavLink exact to="/" className="item">
+              ReactGames
+            </NavLink>
+            <NavLink exact to="/games" className="item">
+              <i className="icon game" /> Games
+            </NavLink>
+            {isAdmin && (
+              <NavLink exact to="/games/create" className="item">
+                <i className="icon plus" /> Add New Game
+              </NavLink>
+            )}
             <div className="right menu">
               <Link to="/login" className="item" onClick={this.onLogout}>
                 Logout

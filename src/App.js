@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+import jwtDecoder from "jwt-decode";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import Games from "./Games";
@@ -25,9 +26,12 @@ class App extends Component {
     message: ""
   };
   componentDidMount() {
-    if (localStorage.getItem("token")) {
+    if (localStorage.token) {
       this.setState({
-        user: { token: JSON.parse(localStorage.getItem("token")) }
+        user: {
+          token: localStorage.token,
+          role: jwtDecoder(localStorage.token).user.role
+        }
       });
       setAuthorizationHeader(localStorage.token);
     }
@@ -36,9 +40,11 @@ class App extends Component {
   login = token => {
     // Three things to do
     // Set the token to the state
-    this.setState({ user: { token: token } });
+    this.setState({
+      user: { token: token, role: jwtDecoder(token).user.role }
+    });
     // Set the token to the localStorage
-    localStorage.setItem("token", JSON.stringify(token));
+    localStorage.token = token;
     // Add authorisation header to the token
     setAuthorizationHeader(token);
   };
@@ -51,11 +57,15 @@ class App extends Component {
   };
   setMessage = message => this.setState({ message });
   render() {
-    const { token,isAdmin } = this.state.user;
+    const { token, isAdmin } = this.state.user;
     const { message } = this.state;
     return (
       <div className="ui container">
-        <Header isAuthenticated={!!token} isAdmin={!!this.state.user.token && this.state.user.role === "admin"} doLogout={this.doLogout} />
+        <Header
+          isAuthenticated={!!token}
+          isAdmin={!!this.state.user.token && this.state.user.role === "admin"}
+          doLogout={this.doLogout}
+        />
         <br />
         {message && (
           <div className="ui info message">
