@@ -19,7 +19,8 @@ const setAuthorizationHeader = (token = null) => {
 class App extends Component {
   state = {
     user: {
-      token: null
+      token: null,
+      role: "admin"
     },
     message: ""
   };
@@ -50,11 +51,11 @@ class App extends Component {
   };
   setMessage = message => this.setState({ message });
   render() {
-    const { token } = this.state.user;
+    const { token,isAdmin } = this.state.user;
     const { message } = this.state;
     return (
       <div className="ui container">
-        <Header isAuthenticated={!!token} doLogout={this.doLogout} />
+        <Header isAuthenticated={!!token} isAdmin={!!this.state.user.token && this.state.user.role === "admin"} doLogout={this.doLogout} />
         <br />
         {message && (
           <div className="ui info message">
@@ -64,13 +65,17 @@ class App extends Component {
         )}
         <Route path="/" exact component={HomePage} />
         <Route
+          path="/games"
+          exact
+          render={props => <Games {...props} user={this.state.user} />}
+        />
+        <Route path="/games/:_id" component={ShowGamePage} />
+        <Route
           path="/register"
           render={props => (
             <SignUpPage {...props} setMessage={this.setMessage} />
           )}
         />
-        <Route path="/games" render={props => <Games {...props} user={this.state.user}/>} />
-        <Route path="/games/:_id" component={ShowGamePage} />
         <Route
           path="/login"
           render={props => <LoginPage {...props} login={this.login} />}

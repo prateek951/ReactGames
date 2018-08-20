@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 class GamesList extends Component {
   render() {
-    const { games, toggleFeatured, deleteGame } = this.props;
+    const { games, toggleFeatured, deleteGame, user } = this.props;
     return (
       <div className="ui four cards">
         {games.length !== 0 ? (
@@ -14,6 +14,7 @@ class GamesList extends Component {
               game={game}
               toggleFeatured={toggleFeatured}
               deleteGame={deleteGame}
+              user={user}
             />
           ))
         ) : (
@@ -32,7 +33,11 @@ class GamesList extends Component {
 
 GamesList.propTypes = {
   games: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteGame : PropTypes.func.isRequired
+  deleteGame : PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    token: PropTypes.string,
+    role: PropTypes.string.isRequired,
+  }).isRequired
 };
 GamesList.defaultProps = {
   games: []

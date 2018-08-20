@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
 import "./App.css";
+import PropTypes from 'prop-types'
 // import Header from "./components/Header";
 import GamesList from "./components/GamesList";
 import GameForm from "./components/GameForm";
 import api from "./api";
+import AdminRoute from "./components/auth/AdminRoute";
 // import SignUp from "./components/auth/SignUp";
 // import Login from "./components/auth/Login";
 
@@ -93,16 +94,16 @@ class Games extends Component {
 
   render() {
     const { games, selectedGame, loading } = this.state;
+    const { user } = this.props;
     const noc = this.props.location.pathname === "/games" ? "sixteen" : "ten";
     return (
       <div className="ui container">
         {/* <Header showGameForm={this.showGameForm} /> */}
         <div className="ui stackable grid">
           {/* Nested route for creating a game */}
-          {this.props.user.role === "admin" ? (
-            <div>
-              <Route
+              <AdminRoute
                 path="/games/create"
+                user={user}
                 render={() => (
                   <div className="six wide column">
                     <GameForm
@@ -113,8 +114,9 @@ class Games extends Component {
                   </div>
                 )}
               />
-              <Route
+              <AdminRoute
                 path="/games/edit/:_id"
+                user={user}
                 render={props => (
                   <div className="six wide column">
                     <GameForm
@@ -127,8 +129,6 @@ class Games extends Component {
                   </div>
                 )}
               />
-            </div>
-          ) : <Route path="/games/*" render={() => <Redirect to="/games"/>}/>}
           <div className={`${noc} wide column`}>
             {loading ? (
               <div className="ui icon message">
@@ -143,6 +143,7 @@ class Games extends Component {
                 games={games}
                 toggleFeatured={this.toggleFeatured}
                 deleteGame={this.deleteGame}
+                user={this.props.user}
               />
             )}
           </div>
@@ -155,4 +156,13 @@ class Games extends Component {
   }
 }
 
+Games.propTypes = {
+  user : PropTypes.shape({
+    token : PropTypes.string,
+    role : PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+
 export default Games;
+
