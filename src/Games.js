@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
 import "./App.css";
@@ -99,31 +99,36 @@ class Games extends Component {
         {/* <Header showGameForm={this.showGameForm} /> */}
         <div className="ui stackable grid">
           {/* Nested route for creating a game */}
-          <Route
-            path="/games/create"
-            render={() => (
-              <div className="six wide column">
-                <GameForm
-                  publishers={publishers}
-                  handleAdd={this.handleSave}
-                  gameForEdit={{}}
-                />
-              </div>
-            )}
-          />
-
-          <Route
-            path="/games/edit/:_id"
-            render={props => (
-              <div className="six wide column">
-                <GameForm
-                  publishers={publishers}
-                  handleAdd={this.handleSave}
-                  gameForEdit={_find(games, { _id: props.match.params._id }) || {}}
-                />
-              </div>
-            )}
-          />
+          {this.props.user.role === "admin" ? (
+            <div>
+              <Route
+                path="/games/create"
+                render={() => (
+                  <div className="six wide column">
+                    <GameForm
+                      publishers={publishers}
+                      handleAdd={this.handleSave}
+                      gameForEdit={{}}
+                    />
+                  </div>
+                )}
+              />
+              <Route
+                path="/games/edit/:_id"
+                render={props => (
+                  <div className="six wide column">
+                    <GameForm
+                      publishers={publishers}
+                      handleAdd={this.handleSave}
+                      gameForEdit={
+                        _find(games, { _id: props.match.params._id }) || {}
+                      }
+                    />
+                  </div>
+                )}
+              />
+            </div>
+          ) : <Route path="/games/*" render={() => <Redirect to="/games"/>}/>}
           <div className={`${noc} wide column`}>
             {loading ? (
               <div className="ui icon message">

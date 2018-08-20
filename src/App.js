@@ -69,7 +69,7 @@ class App extends Component {
             <SignUpPage {...props} setMessage={this.setMessage} />
           )}
         />
-        <Route path="/games" component={Games} />
+        <Route path="/games" render={props => <Games {...props} user={this.state.user}/>} />
         <Route path="/games/:_id" component={ShowGamePage} />
         <Route
           path="/login"
